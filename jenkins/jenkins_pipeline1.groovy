@@ -16,10 +16,15 @@ pipeline{
         stage('run tests'){
             steps{
                 dir('devlops/next_project'){
-                    sh 'nvm install 20.11.0'
-                    sh 'nvm use 20.11.0'
-                    sh 'npm install'
-                    sh 'npm test'
+                    sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    nvm install 20.11.0
+                    nvm use 20.11.0
+                    node --version
+                    npm install
+                    npm test
+                    '''
                 }
             }
         }
