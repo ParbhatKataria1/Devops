@@ -23,7 +23,7 @@ export default function Home() {
   const divide = () => {
     setResult(parseInt(num1) / parseInt(num2));
   };
-  // doing change to trigger jenkins pipeline 1
+  // doing change to trigger jenkins pipeline 2
   return (
     <div className={styles.container}>
       <Head>
