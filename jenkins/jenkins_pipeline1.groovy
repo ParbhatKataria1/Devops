@@ -36,6 +36,12 @@ pipeline {
             }
             steps {
                 dir('next_project') {
+                    sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    nvm use 20.11.0
+                    node --version
+                    '''
                     sh 'npm run build' // building build here to have better control over environemnt.
                 }
             }
