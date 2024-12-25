@@ -48,13 +48,13 @@ export default function Home() {
       <button onClick={divide} className={styles.button} data-testid="divide">
         Divide
       </button>
-      {process.env.NEXT_PUBLIC_SUCCESS_DIV === "true" ? (
+      {/* {process.env.NEXT_PUBLIC_SUCCESS_DIV === "true" ? (
         <div className={styles.text} data-testid="end_div">
           ----------------------
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 }
