@@ -23,7 +23,7 @@ export default function Home() {
   const divide = () => {
     setResult(parseInt(num1) / parseInt(num2));
   };
-  // testing test cases
+  // heroku verification done
   return (
     <div className={styles.container}>
       <Head>
