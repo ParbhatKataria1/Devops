@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NEXT_PUBLIC_SUCCESS_DIV = credentials('NEXT_PUBLIC_SUCCESS_DIV')
-        HEROKU_API_KEY = credentials('HEROKU_API_KEY')
+        HEROKU_API_KEY = credentials('HEROKU_TOKEN')
         HEROKU_EMAIL = credentials('HEROKU_USERNAME')
     }
 
