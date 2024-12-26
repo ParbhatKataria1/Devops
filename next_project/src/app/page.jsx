@@ -23,7 +23,7 @@ export default function Home() {
   const divide = () => {
     setResult(parseInt(num1) / parseInt(num2));
   };
-  // heroku verification done
+  // checking ec2 deployment
   return (
     <div className={styles.container}>
       <Head>
