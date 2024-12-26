@@ -5,6 +5,8 @@ pipeline {
         NEXT_PUBLIC_SUCCESS_DIV = credentials('NEXT_PUBLIC_SUCCESS_DIV')
         HEROKU_API_KEY = credentials('HEROKU_TOKEN')
         HEROKU_EMAIL = credentials('HEROKU_USERNAME')
+        EC2_SECRET_KEY = credentials('EC2_SECRET_KEY')
+        EC2_INSTANCE = credentials('EC2_INSTANCE')
     }
 
     stages {
@@ -48,42 +50,26 @@ pipeline {
             }
         }
 
-        stage('deployment to heroku') {
+        stage('deployment to ec2 instance') {
             when {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' } // checking previous stages were successful
             }
 
             steps {
-                sh '''
-                # Check if Heroku CLI is installed and executable; install it if not
-                    if ! [ -x "$(command -v heroku)" ] ; then
-                        curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
-                    else
-                        echo "Heroku is already installed"
-                    fi
-                echo "machine api.heroku.com
-                    login $HEROKU_EMAIL
-                    password $HEROKU_PASSWORD
-                " > ~/.netrc
-                chmod 600 ~/.netrc
+                sshagent([EC2_SECRET_KEY]) {
+                    sh '''
 
-                HEROKU_APP_NAME=HEROKU_APP_$(date +%s)
+                     scp -o StrictHostKeyChecking=no package.json .next public $EC2_INSTANCE:~/next_project
 
-                heroku create $HEROKU_APP_NAME
-                heroku config:set NEXT_PUBLIC_SUCCESS_DIV=$NEXT_PUBLIC_SUCCESS_DIV --app $HEROKU_APP_NAME
-
-                # Add Heroku Git remote
-                git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git || true
-
-                # Push built files to Heroku
-                git add .next public package.json
-
-                # Commit changes, skip if no new changes exist
-                git commit -m 'push:commit from jenkins'|| true
-                git push heroku main
+                     ssh $EC2_INSTANCE<<EOF
+                     cd ~/next_project
+                     npm install -g pm2
+                     pm2 start -- name "next_project" -- start
+                     pm2 save
+                     EOF
 
                 '''
-
+                }
             }
         }
     }
