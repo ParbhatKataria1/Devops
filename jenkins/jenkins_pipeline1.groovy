@@ -57,7 +57,7 @@ pipeline {
             steps {
                     sh '''
 
-                     scp -o StrictHostKeyChecking=no package.json -i test.pem .next public $EC2_INSTANCE:~/next_project
+                     scp -o StrictHostKeyChecking=no -i test.pem package.json .next public $EC2_INSTANCE:~/next_project
 
                      ssh -i test.pem $EC2_INSTANCE<<EOF
                      cd ~/next_project
