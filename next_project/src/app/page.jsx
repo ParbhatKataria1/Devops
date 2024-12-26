@@ -23,7 +23,7 @@ export default function Home() {
   const divide = () => {
     setResult(parseInt(num1) / parseInt(num2));
   };
-  // checking ec2 deployment 2
+  // checking ec2 deployment 3
   return (
     <div className={styles.container}>
       <Head>
