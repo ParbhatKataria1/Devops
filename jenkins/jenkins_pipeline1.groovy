@@ -56,6 +56,8 @@ pipeline {
             }
 
             steps {
+                echo "EC2_SECRET_KEY: $EC2_SECRET_KEY"
+
                 sshagent(['EC2_SECRET_KEY']) {
                     sh '''
 
