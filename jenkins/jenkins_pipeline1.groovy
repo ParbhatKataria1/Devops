@@ -56,7 +56,7 @@ pipeline {
             }
 
             steps {
-                sshagent([EC2_SECRET_KEY]) {
+                sshagent(['EC2_SECRET_KEY']) {
                     sh '''
 
                      scp -o StrictHostKeyChecking=no package.json .next public $EC2_INSTANCE:~/next_project
