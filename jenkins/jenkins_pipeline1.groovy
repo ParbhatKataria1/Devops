@@ -5,7 +5,6 @@ pipeline {
         NEXT_PUBLIC_SUCCESS_DIV = credentials('NEXT_PUBLIC_SUCCESS_DIV')
         HEROKU_API_KEY = credentials('HEROKU_TOKEN')
         HEROKU_EMAIL = credentials('HEROKU_USERNAME')
-        EC2_SECRET_KEY = credentials('EC2_SECRET_KEY')
         EC2_INSTANCE = credentials('EC2_INSTANCE')
     }
 
@@ -56,12 +55,11 @@ pipeline {
             }
 
             steps {
-                sshagent([EC2_SECRET_KEY]) {
                     sh '''
 
-                     scp -o StrictHostKeyChecking=no package.json .next public $EC2_INSTANCE:~/next_project
+                     scp -o StrictHostKeyChecking=no package.json -i test.pem .next public $EC2_INSTANCE:~/next_project
 
-                     ssh $EC2_INSTANCE<<EOF
+                     ssh -i test.pem $EC2_INSTANCE<<EOF
                      cd ~/next_project
                      npm install -g pm2
                      pm2 start -- name "next_project" -- start
@@ -69,7 +67,6 @@ pipeline {
                      EOF
 
                 '''
-                }
             }
         }
     }
